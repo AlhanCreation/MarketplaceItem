@@ -34,6 +34,13 @@ namespace dotnetapp{
             // string seller = "Amazon";
             // DeleteItem(itemName,seller);
            
+        //    string itemname = "watch";
+        //    SearchItemByName(itemname);
+           
+           string seller = "Amazon";
+           decimal price = 300.00M;
+           FilterBySellerAndPrice(seller,price);
+
             }
     
           static string ConnectionString = ConnectionStringProvider.ConnectionString;
@@ -89,7 +96,7 @@ namespace dotnetapp{
                     using(SqlCommand cmd= new SqlCommand(query,OpenConnection())){
                         using(SqlDataReader reader = cmd.ExecuteReader()){
                             while(reader.Read()){
-                                MarketplaceItem i = new MarketplaceItem{
+                                MarketplaceItem i = new MarketplaceItem {
                                     ItemID = reader.GetInt32(0),
                                     ItemName = reader.GetString(1),
                                     Seller = reader.GetString(2),
@@ -136,7 +143,7 @@ namespace dotnetapp{
                 try{
                     using(SqlCommand cmd= new SqlCommand(query,OpenConnection())){
                     cmd.Parameters.AddWithValue("@itemName",itemName);
-                    cmd.Parameters.AddWithValue("@Seller",seller);
+                    cmd.Parameters.AddWithValue("@seller",seller);
                   
 
                     int result = cmd.ExecuteNonQuery();
@@ -152,6 +159,59 @@ namespace dotnetapp{
                     Console.WriteLine($"Error while Deleting: {ex.Message}");
                 }
             }
+
+            // Search
+            public static void SearchItemByName(string itemname)
+            {
+                try{
+                    string query = "Select * from MarketPlaceItems where ItemName = @itemname";
+                        using(SqlCommand cmd = new SqlCommand(query,OpenConnection()))
+                        {   
+                            cmd.Parameters.AddWithValue("@itemname",itemname);
+                                using(SqlDataReader r = cmd.ExecuteReader())
+                                {
+                                    if(r.HasRows)
+                                        {
+                                            while(r.Read()){
+                                            Console.WriteLine($"ItemID: {r.GetInt32(0)},ItemName: {r.GetString(1)},Seller: {r.GetString(2)},Price: {r.GetDecimal(3)},QuantityAvailable: {r.GetInt32(4)},Contactinfo :{r.GetString(5)},TotalValue: {r.GetDecimal(6)}");
+                                            }
+                                        }
+                                        else{
+                                            Console.WriteLine($"No item found with name: {itemname}");
+                                        }
+                                }    
+                        }        
+                    }
+                    catch(Exception ex)
+                        {
+                            Console.WriteLine($"Search Failed :{ex.Message}");
+                        }
+            }
+
+            //Filter By Seller Price
+            public static void FilterBySellerAndPrice(string seller,decimal price){
+                try
+                {
+                    string query ="Select * from MarketPlaceItems where Seller = @seller and Price>=@price";
+                    using(SqlCommand cmd = new SqlCommand(query,OpenConnection()))
+                    {
+                        cmd.Parameters.AddWithValue("@seller",seller);
+                        cmd.Parameters.AddWithValue("@price",price);
+                        using(SqlDataReader r = cmd.ExecuteReader()){
+                            if(r.HasRows)
+                            {
+                                while(r.Read()){
+                                Console.WriteLine($"ItemID: {r.GetInt32(0)},ItemName: {r.GetString(1)},Seller: {r.GetString(2)},Price: {r.GetDecimal(3)},QuantityAvailable: {r.GetInt32(4)},Contactinfo :{r.GetString(5)},TotalValue: {r.GetDecimal(6)}");
+                            }
+                            }else{
+                                Console.WriteLine("No item match the filter criteria.");
+                            }
+
+                        }
+                    }
+                }catch(Exception ex){ Console.WriteLine($"Error while Filter:{ex.Message}"); }
+            }
+            
 
        
        
