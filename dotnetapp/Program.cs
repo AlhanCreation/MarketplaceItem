@@ -13,35 +13,96 @@ namespace dotnetapp{
     {
          public static void Main(string[] args)
             {
-            // string ItemName ="SmartPhone";
-            // string Seller = "Amazon";
-            // decimal Price = 20000.99m;
-            // int Quantity = 20;
-            // string Contactinfo = "amazon@gmai.com";
+              bool  exit = true;
+                while(exit){
 
-            // MarketplaceItem newItem = new MarketplaceItem(ItemName,Seller,Price,Quantity,Contactinfo);
-            // AddItem(newItem);
-           
+                     Console.WriteLine("Market Place Manager Menu");
+            Console.WriteLine("1. Add Item");
+            Console.WriteLine("2. View All Items");
+            Console.WriteLine("3. Update Item");
+            Console.WriteLine("4. Delete Item");
+            Console.WriteLine("5. Search Item by Name");
+            Console.WriteLine("6. Filter by Seller and Price Threshold");
+            Console.WriteLine("7. Exit");
+            
+            Console.WriteLine("Enter your choice: ");
+            int choice = int.Parse(Console.ReadLine());
 
-            // ViewAllItems();
+        switch(choice)
+            {
+                case 1 :
+                Console.WriteLine("Enter Item Name: ");
+                string? ItemName1 = Console.ReadLine();
 
-            // int id = 2;
-            // decimal newPrice = 4000m;
-            // int newQty = 30;
-            // UpdateItem(id,newPrice,newQty);
+                Console.WriteLine("Enter Seller Name: ");
+                string? Seller = Console.ReadLine();
 
-             // string itemName = "SmartPhone";
-            // string seller = "Amazon";
-            // DeleteItem(itemName,seller);
-           
-        //    string itemname = "watch";
-        //    SearchItemByName(itemname);
-           
-           string seller = "Amazon";
-           decimal price = 300.00M;
-           FilterBySellerAndPrice(seller,price);
+                Console.WriteLine("Enter Price: ");
+                decimal Price =  decimal.Parse(Console.ReadLine());
 
+                Console.WriteLine("Enter Quantity Available: ");
+                int Quantity = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter Contact Info: ");
+                string? Contactinfo = Console.ReadLine();
+
+                MarketplaceItem newItem = new MarketplaceItem(ItemName1,Seller,Price,Quantity,Contactinfo);
+                AddItem(newItem);
+                 break;
+
+                case 2:
+                    ViewAllItems();
+                    break;
+                case 3:
+
+                 Console.WriteLine("Enter Item ID to update: ");
+                 int id = int.Parse(Console.ReadLine());
+
+                 Console.WriteLine("Enter New Quantity : ");
+                 int newQty = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter New Price :");
+                decimal newPrice =  decimal.Parse(Console.ReadLine());
+
+                UpdateItem(id,newPrice,newQty);
+                 break;
+
+                 case 4:
+                 Console.WriteLine("Enter Item Name to delete: ");
+                 string? itemName = Console.ReadLine();
+
+                 Console.WriteLine("Enter Seller to delete: ");
+                 string? seller = Console.ReadLine();
+                 
+                DeleteItem(itemName,seller);
+                break;
+
+                case 5:
+
+                Console.WriteLine("Enter Item Name: ");
+                string? itemname = Console.ReadLine();
+                SearchItemByName(itemname);
+                break;
+
+                case 6:
+                Console.WriteLine("Enter Seller Name: ");
+                string? fseller = Console.ReadLine();
+               
+                Console.WriteLine("Enter Maximum Price: ");
+                decimal price = decimal.Parse(Console.ReadLine());
+                FilterBySellerAndPrice(fseller,price);
+
+                break;
+                case 7:
+                exit = false;
+                Console.WriteLine("Exiting application. GoodBye!");
+                break;
+                
             }
+
+        }
+           
+        }
     
           static string ConnectionString = ConnectionStringProvider.ConnectionString;
 
